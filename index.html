@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo App</title>
+    <link rel="shortcut icon" href="./Assets/Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>To-Do List</h1>
+    <div id="container">
+      <div class="tasks" id="todo"> 
+        <div class="heading">
+            <span>To-Do</span>
+            <img src="./Assets/doing.png" alt="">
+        </div>
+        <div id="inputTask">
+            <input type="text" name="taskInput" id="taskInput">
+            <button id="createTask"><img src="./Assets/createTask.png" alt="CreateTask"></button>
+        </div>
+      </div>
+      <div class="tasks" id="completed">
+        <div class="heading">
+            <span>Completed</span>
+            <img src="./Assets/completed.png" alt="">
+        </div>
+        <button id="clear">Clear <img src="clear.png" alt=""></button>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
