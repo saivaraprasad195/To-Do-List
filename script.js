@@ -1,11 +1,29 @@
+window.addEventListener('load', () => {
+    if (localStorage.getItem('toDotasks')) {
+        todoTasks.innerHTML = localStorage.getItem('toDotasks');
+    }
+    if(localStorage.getItem('completedTasks')){
+        completedTasks.innerHTML = localStorage.getItem('completedTasks');
+    }
+
+    initaializeEventListeners();
+});
+
+function saveTasksToLocalStorage() {
+    localStorage.setItem('toDotasks', todoTasks.innerHTML);
+    localStorage.setItem('completedTasks', completedTasks.innerHTML);
+}
+
+function updateLocalStorage() {
+    saveTasksToLocalStorage();
+}
+
 const todoTasks  = document.getElementById("todo");
 const completedTasks  = document.getElementById("completed");
 const createTaskbtn = document.getElementById("createTask");
-let taskInput = document.getElementById("taskInput");
 let count = 1;
 
 // Create Task Function
-
 function createTask(){
     let taskInput = document.getElementById("taskInput");
     if(taskInput.value === ""){
@@ -37,47 +55,104 @@ function createTask(){
 
     taskInput.value="";//making input to null after adding newTask
     count++;
+    updateLocalStorage();
+    
 }
 
-createTaskbtn.addEventListener("click", createTask);
-taskInput.addEventListener("keydown", (e) => {
-    if(e.key == "Enter"){
-        createTask();
-    }
-})
-
 //Edit Task Function
-
 function editTask(editbtn){
 let taskId = editbtn.getAttribute("taskId");
 let span = document.getElementById(taskId).querySelector("span");
 span.contentEditable=true;
 span.focus();
-let length = span.textContent.length;
-span.setSelectionRange(length, length);
 
     span.addEventListener('blur', function() { // Add event listener to blur event on the span element, When the span loses focus, set contentEditable to false
     span.contentEditable = false;
     })
+
+    updateLocalStorage();
 }
 
-// Delet task function
-
+// Delete task function
 function deleteTask(deletebtn){
 
     let taskId = deletebtn.getAttribute("taskId");
     if(confirm("Do you want to delete this task")){
     document.getElementById(taskId).remove();
     }
+
+    updateLocalStorage();
+}
+
+// Completed Task Functionality
+function moveToCompleted(taskId){
+    console.log(taskId);
+    let task = document.getElementById(taskId);
+
+    let image=task.querySelector(".image");
+    image.src= "./Assets/checked.png";
+
+    let editbtn = task.querySelector(".editbtn");
+    editbtn.remove();
+
+    completedTasks.appendChild(task);
+    updateLocalStorage();
+}
+
+// clearAll Completed tasks functionality
+function clearCompleted(){
+    let tasksToDelete = completedTasks.querySelectorAll(".task");
+    for(let i=0;i<tasksToDelete.length;i++){
+        tasksToDelete[i].remove();
+    }
+    updateLocalStorage();
 }
 
 //Adding event Listener on ToDo Task Container
 
-todoTasks.addEventListener("click", (e) => {
-    if(e.target.parentNode.classList.contains("editbtn")){ // if event is triggered by pressing EDIT button
-        editTask(e.target.parentNode);  
-    }
-    else if(e.target.parentNode.classList.contains("deletebtn")){
-       deleteTask(e.target.parentNode)
+function initaializeEventListeners(){
+
+    const todoTasks  = document.getElementById("todo");
+    const completedTasks  = document.getElementById("completed");
+    const createTaskbtn = document.getElementById("createTask");
+    let count = 1;
+
+
+    createTaskbtn.addEventListener("click", createTask);
+    taskInput.addEventListener("keydown", (e) => {
+    if(e.key == "Enter"){
+        createTask();
     }
 })
+
+
+    todoTasks.addEventListener("click", (e) => {
+        if(e.target.parentNode.classList.contains("editbtn")){ // if event is triggered by pressing EDIT button
+            editTask(e.target.parentNode);  
+        }
+        else if(e.target.parentNode.classList.contains("deletebtn")){
+           deleteTask(e.target.parentNode)
+        }
+        else if(e.target.classList.contains("image")){
+            moveToCompleted(e.target.parentNode.getAttribute("id"));
+        }
+    })
+    
+    completedTasks.addEventListener("click", (e) => {
+        if(e.target.parentNode.classList.contains("deletebtn")){
+            deleteTask(e.target.parentNode);
+        }
+    })
+    
+    let clearCompletedTasks=document.getElementById("clear");
+    clearCompletedTasks.addEventListener("click" , () => {
+        if(confirm("Do you want to clear all Completed Tasks?")){
+            
+            clearCompleted();
+        }
+    })
+}
+
+
+
+
