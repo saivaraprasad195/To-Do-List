@@ -167,6 +167,9 @@ span{
     transition: transform 0.3s ease; /* Add a smooth transition effect */
 }
 
+.hideeditbtn{
+    display: none !important;
+}
 .task{
     background-color: #fff;
     padding: 8px;

@@ -14,9 +14,7 @@ function saveTasksToLocalStorage() {
     localStorage.setItem('completedTasks', completedTasks.innerHTML);
 }
 
-function updateLocalStorage() {
-    saveTasksToLocalStorage();
-}
+   
 
 const todoTasks  = document.getElementById("todo");
 const completedTasks  = document.getElementById("completed");
@@ -93,9 +91,24 @@ function moveToCompleted(taskId){
     image.src= "./Assets/checked.png";
 
     let editbtn = task.querySelector(".editbtn");
-    editbtn.remove();
+    editbtn.classList.add("hideeditbtn")
 
     completedTasks.appendChild(task);
+    updateLocalStorage();
+}
+
+//Moving task back to TODO list from Completed Tasks
+function moveToTodo(taskId){
+    console.log(taskId);
+    let task = document.getElementById(taskId);
+
+    let image=task.querySelector(".image");
+    image.src= "./Assets/unchecked.png";
+
+    let editbtn = task.querySelector(".editbtn");
+    editbtn.classList.remove("hideeditbtn")
+
+    todoTasks.appendChild(task);
     updateLocalStorage();
 }
 
@@ -141,6 +154,9 @@ function initaializeEventListeners(){
     completedTasks.addEventListener("click", (e) => {
         if(e.target.parentNode.classList.contains("deletebtn")){
             deleteTask(e.target.parentNode);
+        }
+        else if(e.target.classList.contains("image")){
+            moveToTodo(e.target.parentNode.getAttribute("id"));
         }
     })
     
