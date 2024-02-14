@@ -147,7 +147,6 @@ function initaializeEventListeners(){
     let clearCompletedTasks=document.getElementById("clear");
     clearCompletedTasks.addEventListener("click" , () => {
         if(confirm("Do you want to clear all Completed Tasks?")){
-            
             clearCompleted();
         }
     })
