@@ -14,7 +14,9 @@ function saveTasksToLocalStorage() {
     localStorage.setItem('completedTasks', completedTasks.innerHTML);
 }
 
-   
+function updateLocalStorage() {
+    saveTasksToLocalStorage();
+}
 
 const todoTasks  = document.getElementById("todo");
 const completedTasks  = document.getElementById("completed");
